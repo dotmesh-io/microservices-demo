@@ -183,7 +183,7 @@ services:
     tmpfs:
       - /tmp:rw,noexec,nosuid
     volumes:
-      - sockshop.orders-db:/data/db-users
+      - sockshop.user-db:/data/db-users
   user-sim:
     image: weaveworksdemos/load-test:0.1.1
     cap_drop:
