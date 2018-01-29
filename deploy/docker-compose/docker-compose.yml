@@ -1,5 +1,15 @@
 version: '2'
 
+volumes:
+  sockshop.catalogue-db:
+    driver: dm
+  sockshop.carts-db:
+    driver: dm
+  sockshop.orders-db:
+    driver: dm
+  sockshop.user-db:
+    driver: dm
+
 services:
   front-end:
     image: weaveworksdemos/front-end:0.3.12
@@ -43,6 +53,8 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_DATABASE=socksdb
+    volumes:
+      - sockshop.catalogue-db:/var/lib/mysql
   carts:
     image: weaveworksdemos/carts:0.4.8
     hostname: carts
@@ -69,6 +81,8 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
+    volumes:
+      - sockshop.carts-db:/data/db
   orders:
     image: weaveworksdemos/orders:0.4.7
     hostname: orders
@@ -95,6 +109,8 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
+    volumes:
+      - sockshop.orders-db:/data/db
   shipping:
     image: weaveworksdemos/shipping:0.4.8
     hostname: shipping
@@ -166,6 +182,8 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid
+    volumes:
+      - sockshop.orders-db:/data/db-users
   user-sim:
     image: weaveworksdemos/load-test:0.1.1
     cap_drop:
